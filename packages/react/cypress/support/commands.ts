@@ -10,6 +10,8 @@ import {
 
 import "cypress-file-upload";
 
+import "@cypress-audit/lighthouse/commands";
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const compareSnapshotCommand = require("cypress-image-diff-js/command");
 compareSnapshotCommand();
