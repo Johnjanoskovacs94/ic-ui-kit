@@ -30,6 +30,11 @@ describe("Performance testing", () => {
         cy.lighthouse(customThresholds, desktopConfig);
     })
 
+    it.only('lighthouse', { baseUrl: null }, () => {
+        cy.visit('http://localhost:1234');
+        cy.lighthouse(customThresholds, desktopConfig);
+    })
+
     // it("generates Lighthouse report", () => {
     //     cy.visit("iframe.html?args=&id=react-components-button--many-buttons&viewMode=story");
     //     cy.lighthouse(customThresholds, desktopConfig, lighthouseConfig);

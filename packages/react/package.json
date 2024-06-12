@@ -20,6 +20,7 @@
     "cypress:open": "cypress open",
     "cypress:component": "cypress run --component --headless",
     "cypress:ci": "cross-env CYPRESS_CI=true npm run cypress:component",
+    "cypress:performance": "concurrently \"npx serve -p 1234 ./src/performance-tests/ic-button.html \" \"npm run cypress:open\"",
     "clean": "rimraf dist",
     "compile": "npm run tsc",
     "tsc": "tsc -p .",
@@ -40,7 +41,9 @@
     "dist/"
   ],
   "dependencies": {
-    "@ukic/web-components": "^2.21.0"
+    "@cypress-audit/lighthouse": "^1.4.2",
+    "@ukic/web-components": "^2.21.0",
+    "concurrently": "^8.2.2"
   },
   "devDependencies": {
     "@babel/core": "^7.23.2",
