@@ -47,7 +47,7 @@ import readme from "./readme.md";
       html`
         <ic-radio-group
           orientation="horizontal"
-          label="This is a label"
+          label="This should be horizontal"
           name="1"
         >
           <ic-radio-option
@@ -58,6 +58,28 @@ import readme from "./readme.md";
           <ic-radio-option
             value="valueName2"
             label="Unselected / Default"
+          ></ic-radio-option>
+        </ic-radio-group>
+        <br/>
+        <p>Horizontal orientation is overridden with >2 radio options</p>
+        <br/>
+        <ic-radio-group
+          orientation="horizontal"
+          label="This should be vertical"
+          name="2"
+        >
+          <ic-radio-option
+            value="valueNameA"
+            label="First"
+            selected
+          ></ic-radio-option>
+          <ic-radio-option
+            value="valueNameB"
+            label="Second"
+          ></ic-radio-option>
+          <ic-radio-option
+            value="valueNameC"
+            label="Third"
           ></ic-radio-option>
         </ic-radio-group>
       `
@@ -140,7 +162,11 @@ import readme from "./readme.md";
             .querySelector("ic-radio-group")
             .addEventListener("icChange", handleIcChange);
         </script>
-        <ic-radio-group label="Conditional dynamic" name="1">
+        <ic-radio-group
+          label="Conditional dynamic"
+          orientation="horizontal"
+          name="1"
+        >
           <ic-radio-option
             additional-field-display="dynamic"
             value="valueName1"

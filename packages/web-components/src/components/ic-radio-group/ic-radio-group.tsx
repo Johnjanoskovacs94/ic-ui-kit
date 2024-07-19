@@ -26,6 +26,8 @@ import {
 } from "../../utils/types";
 import { IcChangeEventDetail } from "./ic-radio-group.types";
 
+const ADDITIONAL_FIELD = "additional-field";
+
 @Component({
   tag: "ic-radio-group",
   styleUrl: "ic-radio-group.css",
@@ -99,7 +101,7 @@ export class RadioGroup {
 
   @Watch("orientation")
   orientationChangeHandler(): void {
-    this.initialOrientation = this.orientation;
+    this.currentOrientation = this.initialOrientation;
   }
 
   /**
@@ -117,9 +119,9 @@ export class RadioGroup {
 
   componentWillLoad(): void {
     removeDisabledFalse(this.disabled, this.el);
-
+    this.initialOrientation = this.orientation;
     this.orientationChangeHandler();
-    this.currentOrientation = this.initialOrientation;
+    this.checkOrientation();
   }
 
   componentDidLoad(): void {
@@ -186,17 +188,23 @@ export class RadioGroup {
         if (i < arr.length - 1) totalWidth += 40;
       });
 
-      if (
-        this.currentOrientation === "horizontal" &&
-        totalWidth > this.radioContainer.clientWidth
-      ) {
-        this.currentOrientation = "vertical";
-      } else if (
-        this.currentOrientation === "vertical" &&
-        totalWidth < this.radioContainer.clientWidth
-      ) {
-        this.currentOrientation = "horizontal";
+      if (this.currentOrientation === "horizontal") {
+        if (
+          this.radioOptions !== undefined &&
+          (this.radioOptions.length > 2 ||
+            (this.radioOptions.length === 2 &&
+              (isSlotUsed(this.radioOptions[0], ADDITIONAL_FIELD) ||
+                isSlotUsed(this.radioOptions[1], ADDITIONAL_FIELD))))
+        ) {
+          this.orientation = "vertical";
+        }
+        if (totalWidth >= this.radioContainer.clientWidth) {
+          this.orientation = "vertical";
+        } else if (totalWidth < this.radioContainer.clientWidth) {
+          this.orientation = "horizontal";
+        }
       }
+      this.currentOrientation = this.orientation;
     }
   }
 
@@ -270,17 +278,6 @@ export class RadioGroup {
         }
       });
       this.setFirstRadioOptionTabIndex(this.selectedChild > 0 ? -1 : 0);
-    }
-
-    if (
-      this.initialOrientation === "horizontal" &&
-      this.radioOptions !== undefined &&
-      (this.radioOptions.length > 2 ||
-        (this.radioOptions.length === 2 &&
-          (isSlotUsed(this.radioOptions[0], "additional-field") ||
-            isSlotUsed(this.radioOptions[1], "additional-field"))))
-    ) {
-      this.currentOrientation = "vertical";
     }
   };
 
