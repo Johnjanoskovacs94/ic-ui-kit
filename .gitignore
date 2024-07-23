@@ -2,6 +2,8 @@ dist/
 build/
 www/
 
+dist-perf/
+
 packages/web-components/.loki/current
 packages/web-components/.loki/difference
 packages/web-components/docs.d.ts
