@@ -1,5 +1,5 @@
 {
-  "timestamp": "2024-07-24T14:34:16",
+  "timestamp": "2024-07-26T13:50:52",
   "compiler": {
     "name": "@stencil/core",
     "version": "4.9.0",
@@ -181,7 +181,7 @@
           "reflectToAttr": false,
           "docs": "Sets the row height on all rows in the table that aren't set using the `variableRowHeight` method.",
           "docsTags": [],
-          "default": "40",
+          "default": "\"auto\"",
           "values": [
             {
               "value": "auto",

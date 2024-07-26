@@ -137,7 +137,7 @@ export class DataTable {
   /**
    * Sets the row height on all rows in the table that aren't set using the `variableRowHeight` method.
    */
-  @Prop({ mutable: true }) globalRowHeight?: IcDataTableRowHeights = 40;
+  @Prop({ mutable: true }) globalRowHeight?: IcDataTableRowHeights = "auto";
 
   /**
    * If `true`, column headers will not be visible.
