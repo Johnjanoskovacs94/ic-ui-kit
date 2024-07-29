@@ -2,6 +2,7 @@
 
 :host {
   display: inline-block;
+  max-width: 100%;
 }
 
 .chip {
@@ -27,6 +28,9 @@
 
 .label {
   padding: 0 var(--ic-space-xs);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .chip.hovered:not(:focus-within) {

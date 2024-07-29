@@ -15,6 +15,7 @@ import {
   isSlotUsed,
   removeDisabledFalse,
   convertToRGBA,
+  checkResizeObserver,
 } from "../../utils/helpers";
 import { IcChipAppearance } from "./ic-chip.types";
 import { IcColor, IcEmphasisType, IcSizes } from "../../utils/types";
@@ -32,9 +33,13 @@ import dismissIcon from "../../assets/dismiss-icon.svg";
   },
 })
 export class Chip {
+  private labelEl: HTMLElement;
+  private resizeObserver: ResizeObserver;
+
   @Element() el: HTMLIcChipElement;
 
   @State() hovered: boolean = false;
+  @State() labelOverflow: boolean = false;
   @State() visible: boolean = true;
 
   /**
@@ -95,6 +100,12 @@ export class Chip {
    */
   @Event() icDismiss: EventEmitter<void>;
 
+  disconnectedCallback(): void {
+    if (this.resizeObserver !== null) {
+      this.resizeObserver.disconnect();
+    }
+  }
+
   componentWillLoad(): void {
     removeDisabledFalse(this.disabled, this.el);
 
@@ -112,6 +123,8 @@ export class Chip {
       [{ prop: this.label, propName: "label" }],
       "Chip"
     );
+
+    checkResizeObserver(this.runResizeObserver);
   }
 
   @Listen("icDismiss", { capture: true })
@@ -153,6 +166,15 @@ export class Chip {
     }
   };
 
+  private runResizeObserver = () => {
+    this.resizeObserver = new ResizeObserver(() => {
+      this.labelEl &&
+        (this.labelOverflow =
+          this.labelEl.offsetWidth < this.labelEl.scrollWidth);
+    });
+    this.resizeObserver.observe(this.el);
+  };
+
   render() {
     const {
       label,
@@ -167,52 +189,58 @@ export class Chip {
 
     return (
       visible && (
-        <div
-          class={{
-            chip: true,
-            [`${appearance}`]: appearance !== undefined,
-            [`${variant}`]: true,
-            [`${size}`]: true,
-            disabled,
-            dismissible,
-            hovered,
-            "white-background":
-              this.variant === "outlined" && !this.transparentBackground,
-          }}
+        <ic-tooltip
+          label={label}
+          class={{ "tooltip-disabled": !this.labelOverflow || hovered }}
         >
-          {isSlotUsed(this.el, "icon") && (
-            <div class="icon">
-              <slot name="icon" />
-            </div>
-          )}
-          <ic-typography
-            variant="label"
-            apply-vertical-margins={false}
-            class="label"
+          <div
+            class={{
+              chip: true,
+              [`${appearance}`]: appearance !== undefined,
+              [`${variant}`]: true,
+              [`${size}`]: true,
+              disabled,
+              dismissible,
+              hovered,
+              "white-background":
+                this.variant === "outlined" && !this.transparentBackground,
+            }}
           >
-            <span>{label}</span>
-          </ic-typography>
-          {dismissible && (
-            <ic-tooltip
-              label="Dismiss"
-              target="dismiss-icon"
-              class={{ "tooltip-disabled": disabled }}
+            {isSlotUsed(this.el, "icon") && (
+              <div class="icon">
+                <slot name="icon" />
+              </div>
+            )}
+            <ic-typography
+              ref={(el) => (this.labelEl = el)}
+              variant="label"
+              apply-vertical-margins={false}
+              class="label"
             >
-              <button
-                id="dismiss-icon"
-                class="dismiss-icon"
-                aria-label={`Dismiss ${label} chip`}
-                disabled={disabled}
-                tabindex={disabled ? -1 : 0}
-                onClick={this.dismissAction}
-                onMouseEnter={this.mouseEnterHandler}
-                onMouseLeave={this.mouseLeaveHandler}
-                innerHTML={dismissIcon}
-              ></button>
-            </ic-tooltip>
-          )}
-          {isSlotUsed(this.el, "badge") && <slot name="badge"></slot>}
-        </div>
+              <span>{label}</span>
+            </ic-typography>
+            {dismissible && (
+              <ic-tooltip
+                label="Dismiss"
+                target="dismiss-icon"
+                class={{ "tooltip-disabled": disabled }}
+              >
+                <button
+                  id="dismiss-icon"
+                  class="dismiss-icon"
+                  aria-label={`Dismiss ${label} chip`}
+                  disabled={disabled}
+                  tabindex={disabled ? -1 : 0}
+                  onClick={this.dismissAction}
+                  onMouseEnter={this.mouseEnterHandler}
+                  onMouseLeave={this.mouseLeaveHandler}
+                  innerHTML={dismissIcon}
+                ></button>
+              </ic-tooltip>
+            )}
+            {isSlotUsed(this.el, "badge") && <slot name="badge"></slot>}
+          </div>
+        </ic-tooltip>
       )
     );
   }

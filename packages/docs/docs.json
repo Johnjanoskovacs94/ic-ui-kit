@@ -1,5 +1,5 @@
 {
-  "timestamp": "2024-07-19T12:14:10",
+  "timestamp": "2024-07-29T14:29:57",
   "compiler": {
     "name": "@stencil/core",
     "version": "4.10.0",
@@ -4050,13 +4050,13 @@
       "parts": [],
       "dependents": [],
       "dependencies": [
-        "ic-typography",
-        "ic-tooltip"
+        "ic-tooltip",
+        "ic-typography"
       ],
       "dependencyGraph": {
         "ic-chip": [
-          "ic-typography",
-          "ic-tooltip"
+          "ic-tooltip",
+          "ic-typography"
         ],
         "ic-tooltip": [
           "ic-typography"
