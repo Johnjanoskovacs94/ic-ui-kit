@@ -76,10 +76,11 @@ export class Typography {
   }
 
   componentDidLoad(): void {
+    const componentsWithTruncation = ["IC-TOOLTIP", "IC-CHIP"];
+
     if (
       (this.variant === "body" ||
-        (this.el.getRootNode() as ShadowRoot)?.host?.tagName ===
-          "IC-TOOLTIP") &&
+        componentsWithTruncation.includes((this.el.getRootNode() as ShadowRoot)?.host?.tagName)) &&
       this.maxLines > 0
     ) {
       const marker = document.createElement("span");
@@ -175,6 +176,8 @@ export class Typography {
       bold,
     } = this;
 
+    const componentsWithTruncation = ["IC-TOOLTIP", "IC-CHIP"];
+
     return (
       <Host
         class={{
@@ -187,9 +190,8 @@ export class Typography {
         }}
       >
         {(variant === "body" ||
-          (this.el.getRootNode() as ShadowRoot)?.host?.tagName ===
-            "IC-TOOLTIP") &&
-        maxLines > 0 ? (
+          componentsWithTruncation.includes((this.el.getRootNode() as ShadowRoot)?.host?.tagName)) &&
+          maxLines > 0 ? (
           <div class="trunc-wrapper" ref={(el) => (this.truncWrapperEl = el)}>
             <slot />
           </div>

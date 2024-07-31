@@ -28,9 +28,9 @@
 
 .label {
   padding: 0 var(--ic-space-xs);
-  overflow: hidden;
+  /* overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: nowrap; */
 }
 
 .chip.hovered:not(:focus-within) {
@@ -65,8 +65,7 @@ ic-tooltip:focus-within {
 .outline,
 .outlined {
   color: var(--ic-architectural-900);
-  border: var(--ic-border-width) solid
-    var(--chip-custom-color, var(--ic-architectural-900));
+  border: var(--ic-border-width) solid var(--chip-custom-color, var(--ic-architectural-900));
   padding: calc(var(--ic-space-xxs) - var(--ic-space-1px));
 }
 

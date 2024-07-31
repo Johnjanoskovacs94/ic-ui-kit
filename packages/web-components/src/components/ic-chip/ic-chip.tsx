@@ -76,6 +76,11 @@ export class Chip {
   @Prop() label!: string;
 
   /**
+   * The number of lines to display before truncating the text.
+   */
+  @Prop() maxLines?: number;
+
+  /**
    * The size of the chip.
    */
   @Prop() size?: IcSizes = "default";
@@ -125,6 +130,14 @@ export class Chip {
     );
 
     checkResizeObserver(this.runResizeObserver);
+  }
+
+  componentDidRender(): void {
+    this.maxLines > 0 &&
+      this.labelEl.setAttribute(
+        "style",
+        `--truncation-max-lines: ${this.maxLines}`
+      );
   }
 
   @Listen("icDismiss", { capture: true })
@@ -191,7 +204,7 @@ export class Chip {
       visible && (
         <ic-tooltip
           label={label}
-          class={{ "tooltip-disabled": !this.labelOverflow || hovered }}
+          class={{ "tooltip-disabled": !this.labelOverflow && !(this.maxLines >= 1) || hovered }}
         >
           <div
             class={{
@@ -216,8 +229,9 @@ export class Chip {
               variant="label"
               apply-vertical-margins={false}
               class="label"
+              maxLines={this.maxLines}
             >
-              <span>{label}</span>
+              {label}
             </ic-typography>
             {dismissible && (
               <ic-tooltip

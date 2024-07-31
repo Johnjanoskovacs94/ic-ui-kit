@@ -559,6 +559,10 @@ export namespace Components {
          */
         "label": string;
         /**
+          * The number of lines to display before truncating the text.
+         */
+        "maxLines"?: number;
+        /**
           * Sets focus on the chip.
          */
         "setFocus": () => Promise<void>;
@@ -3854,6 +3858,10 @@ declare namespace LocalJSX {
           * The text rendered within the chip.
          */
         "label": string;
+        /**
+          * The number of lines to display before truncating the text.
+         */
+        "maxLines"?: number;
         /**
           * @deprecated This event should not be used anymore. Use icDismiss instead.
          */
